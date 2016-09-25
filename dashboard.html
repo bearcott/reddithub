@@ -1,0 +1,76 @@
+<head>
+  <title>dashboard</title>
+</head>
+
+<body>
+  <header>
+    <h1 class="title">Reddit Dashboard {{viewlength}}</h1>
+    <div class="options">
+      <form id="search">
+        <input name="search" class="search">
+        <button type="submit">Search</button>
+      </form>
+      <label>Open in a new window</label>
+      <input type="radio" class="window" checked="{{isWindow}}">
+      <label>Open in a new tab</label>
+      <input type="radio" class="tab" checked="{{isTab}}">
+      <label>Open normally</label>
+      <input type="radio" class="normal" checked="{{isNormal}}">
+      <button class="ion-arrow-up-b up"></button>
+      {{> loginButtons}}
+    </div>
+  </header>
+  {{> smartbar}}
+  {{> subreddits}}
+  <div class="overlay"></div>
+</body>
+
+<template name="subreddits">
+  <section id="subreddits" class="container">
+    <div class="content">
+      {{#each subreddits}}
+        {{> subreddit}}
+      {{/each}}
+    </div>
+    <div class="fake_subreddit"><i class="ion-plus-round"></i></div>
+  </section>
+</template>
+
+<template name="subreddit">
+  <div class="subreddit {{#if dragged}}dragged{{/if}}">
+    <div class="header" style="background: hsl({{color}},80%,65%)">
+      <button class="ion-close-round close-subreddit"></button>
+      <button class="ion-arrow-move drag-subreddit"></button>
+      <a href="https://www.reddit.com/r/{{title}}" target="_blank"><h1>{{title}}</h1></a>
+    </div>
+    <div class="content">
+      <ul>
+        {{#each post}}
+          <li>
+            <div class="info">
+              <i class="ion-arrow-up-b upvote"></i>
+              <span class="id">{{this.id}}</span>
+              <span class="votes">{{this.score}}</span>
+              <i class="ion-arrow-down-b downvote"></i>
+            </div>
+            {{#if this.thumbnail}}<img class="thumbnail" src="{{this.thumbnail}}">{{/if}}
+            <a class="link" href="{{this.url}}">{{this.title}}</a>
+            <a class="link" href="https://www.reddit.com{{this.permalink}}">{{this.numcomments}}</a>
+            <div class="clear"></div>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="smartbar">
+  <div id="smartbar" class="unselectable">
+    {{#each subreddits}}
+      <div class="sub" style="width: {{sublength}}%; color: hsl({{color}},80%,65%)">
+        {{this.title}}
+      </div>
+    {{/each}}
+    <div class="viewfinder"></div>
+  </div>
+</template>
